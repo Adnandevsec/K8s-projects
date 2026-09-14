@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-app
+    spec:
+      containers:
+        - name: app-container
+          image: fastapi-env-app:v4
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8008
+          
+
+          envFrom:
+            - configMapRef:
+                name: app-env-config
+            - secretRef:
+                name: app-secret
+
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8008
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8008
+            initialDelaySeconds: 5

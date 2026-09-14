@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: app-env-config
+
+data:
+
+  APP_TITLE: "FastAPI Kubernetes Lab"
+  ENVIRONMENT: "production"
